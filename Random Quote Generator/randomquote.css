@@ -1,0 +1,46 @@
+h1{
+  font-family: 'Oswald', sans-serif;
+  color:#1c2128;
+  font-size:75px;
+	margin-top:5%;
+}
+
+#quote-content{
+	border: 2px solid black;	
+	height:150px;
+	font-family: 'Oswald', sans-serif;
+  background-color:white;
+  font-size:25px;
+	padding-left:4%;
+	padding-right:4%;
+	margin: 5% 8% 0% 8%;
+	transition: color 2s linear;
+  -webkit-transition: color 2s linear;
+  -moz-transition: color 2s linear;
+	
+}
+
+#quote-source{
+	padding-right:25%;
+	font-family: 'Oswald', sans-serif;
+  color:#1c2128;
+	font-size:22px;
+}
+
+#buttons{
+	margin-top:5%;
+}
+
+#new-quote{
+	height: 50px;
+	padding-top:10x;
+	font-family: 'Oswald', sans-serif;
+  color:black;
+	font-size:25px;
+}
+
+body{
+	transition: background 2s linear;
+  -webkit-transition: background 2s linear;
+  -moz-transition: background 2s linear;
+}
