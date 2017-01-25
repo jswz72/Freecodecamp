@@ -1,0 +1,47 @@
+body {
+    background-color:#1E2664;
+}
+
+h1{
+  font-family: 'Montserrat', sans-serif;
+  color:#CBCBD3;
+  font-size:100px;
+}
+
+#city{
+  font-family: 'Montserrat', sans-serif;
+  color:#7D83B0;
+  font-size:50px;
+}
+
+#weather-type{
+   font-family: 'Montserrat', sans-serif;
+  color:#7D83B0;
+  font-size:50px;
+  text-transform:capitalize;
+}
+
+#highlight{
+  color:orange;
+}
+
+#highlight2{
+  color:#000884;
+}
+
+h5{
+  color:#7D83B0;
+  font-size:12px;
+}
+
+#sunrise{
+  font-family: 'Montserrat', sans-serif;
+  color:#7D83B0;
+  font-size:25px;
+}
+
+#sunset{
+  font-family: 'Montserrat', sans-serif;
+  color:#7D83B0;
+  font-size:25px;
+}
