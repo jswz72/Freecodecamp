@@ -34,6 +34,8 @@ $(document).ready(function() {
     }
     //if operator pressed, make sure no other operator stored until cleared by '='
     else if (btnVal === '/' || btnVal === '*' || btnVal === '-' || btnVal === '+') {
+      $("#history").html("asdf");
+      console.log("1234");
       if(opScan){
         a = a.append($("#input").html());
         console.log("asdf");
