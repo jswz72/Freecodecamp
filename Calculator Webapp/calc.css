@@ -10,23 +10,21 @@
   box-shadow:8px 8px 25px 20px gray;
 }
 #screen{
-  display:flex;
   background-color:gray;
-  flex-direction:column;
   height:150px;
   border:2px solid black;
 
 }
 
 #input{
-  align-self:center;
+  text-align:center;
   font-family: 'Overpass Mono', monospace;
   font-size:25px;
 }
 
 #history{
   color:black;
-  align-self:flex-end;
+  text-align:center;
   font-family: 'Overpass Mono', monospace;
   font-size:25px;
 }
@@ -62,9 +60,3 @@ button{
 #ce{
   background-color:#7B151F;
 }
-
-
-
-
-
-
