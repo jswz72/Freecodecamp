@@ -29,32 +29,32 @@ $(document).ready(function() {
       console.log(a + operatorVal + b);
       $("#input").html(math.eval(a + operatorVal + b));
       answer = true;
-      opScan = true;
+      opScan = false;
 
     }
     //if operator pressed, make sure no other operator stored until cleared by '='
     else if (btnVal === '/' || btnVal === '*' || btnVal === '-' || btnVal === '+') {
-      $("#history").html("asdf");
-      console.log("1234");
+      
       if(opScan){
         a = a.append($("#input").html());
-        console.log("asdf");
+        //console.log("asdf");
       }else{
-        a = $("#input").html();
-        console.log("qwerty");
+        a = $("#history").html();
+        //console.log("qwerty");
       }
       operatorVal = btnVal;
-      console.log(operatorVal)
-      console.log(a);
+      //console.log(operatorVal);
+      //console.log($("#history").html());
       $("#input").html(operatorVal);
+      $("#history").append(operatorVal);
       opScan = true;
 
     }
     //ac pushed --> clear input and history, reset operator
     else if (btnVal === 'ac') {
-      console.log("e");
-      $("#input").html(' ');
-      $("#history").html(' ');
+      $("#input").html('');
+      $("#history").html('');
+      
     }
     //ce pushed --> clear input, reset operator
     else if (btnVal === 'ce') {
@@ -67,7 +67,9 @@ $(document).ready(function() {
       
       afterOp = false;
     } else {
-      $("#input").append(btnVal);
+      $("#input").html('');
+      $("#input").html(btnVal);
+      $("#history").append(btnVal);
     }
   });
 
