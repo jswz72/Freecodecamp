@@ -5,13 +5,13 @@
   flex-direction:column;
   margin-left:30%;
   margin-right:30%;
-  height:400px;
+  height:450px;
   border-radius:20px;
   box-shadow:8px 8px 25px 20px gray;
 }
 #screen{
   background-color:gray;
-  height:150px;
+  height:200px;
   border:2px solid black;
 
 }
@@ -24,9 +24,11 @@
 
 #history{
   color:black;
-  text-align:center;
+  text-align:right;
+  padding-right:25px;
   font-family: 'Overpass Mono', monospace;
   font-size:25px;
+  margin-bottom:1px;
 }
 
 #calc-buttons{
@@ -60,3 +62,9 @@ button{
 #ce{
   background-color:#7B151F;
 }
+
+
+
+
+
+
