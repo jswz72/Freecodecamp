@@ -17,14 +17,20 @@ $(document).ready(function() {
     //Calculate if '=' pushed
     if (btnVal === '=') {
       
+      if(math.eval($("#history").html()).toString().length > 18){
+        $("#input").html("Digit Limit Met :(");
+    }else{
       $("#input").html(math.eval($("#history").html()));
+    }
       answer = true;
+      afterOp = false;
 
     }
     //ac pushed --> clear input and history
     else if (btnVal === 'ac') {
       $("#input").html('');
       $("#history").html('');
+      afterOp = false;
       
     }
     //ce pushed --> clear input & last operand
@@ -48,12 +54,21 @@ $(document).ready(function() {
       historyArr = historyArr.join('');
       console.log(historyArr);
       $("#history").html(historyArr);
+      afterOp = false;
       
       //All normal button presses
-    } else {
+    }else if(btnVal === '/' || btnVal === '*' || btnVal === '+' || btnVal === '-' || btnVal === '.'){
+        if(!afterOp){
+           $("#input").html('');
+           $("#input").html(btnVal);
+           $("#history").append(btnVal);
+          afterOp = true;
+        }
+      } else {
       $("#input").html('');
       $("#input").html(btnVal);
       $("#history").append(btnVal);
+      afterOp = false;
     }
   });
 
