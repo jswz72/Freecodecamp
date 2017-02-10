@@ -1,7 +1,22 @@
 $(document).ready(function(){
-  $(".box").fadeOut(0);
+  
+  var tictacbox = ['','','','','','','','','']
+  var value;
+  var player = '';
   
   $(".box").click(function(){
-  $(this).html("X");
+    if(player === 'x'){
+      player = 'o';
+    }else{
+      player ='x';
+    }
+    value = $(this).attr("value");
+    //console.log(value);
+    tictacbox[value] = player;
+    //Draw array on board
+    var i = 0;
+    $(".box").each(function(i) {
+      $(this).html(tictacbox[i]);
+    });
   });
 });
