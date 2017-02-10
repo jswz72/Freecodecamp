@@ -1,75 +1,62 @@
-$(document).ready(function() {
-  var afterOp = false;
-  var operatorArr = ['/', '*', '-', '+']
-  var answer = false; //Flag: True if answer to calculation displayed on screen
+//Draw gameboard using array tictacbox
+function drawBoard(tictacbox){
+  var i = 0;
+    $(".box").each(function(i) {
+      $(this).html(tictacbox[i]);
+    });
+  return;
+}
 
-  $("button").click(function() {
+function gameOver(tictacbox){
+  tictacbox = ['', '', '', '', '', '', '', '', ''];
+  drawBoard(tictacbox);
+  $("h1").html("YOU LOSE");
+}
 
-    var btnVal = $(this).attr('value'); //html value of button pressed
-
-    //After answer displayed, clear out window before continuing
-    if (answer) {
-      $("#history").html('');
-      $("#input").html('');
-      answer = false;
-    }
-
-    //Calculate if '=' pushed
-    if (btnVal === '=') {
-      
-      if(math.eval($("#history").html()).toString().length > 18){
-        $("#input").html("Digit Limit Met :(");
+$(document).ready(function(){
+  
+  var tictacbox = ['','','','','','','','',''];
+  var value;
+  var player = '';
+  
+  $(".box").click(function(){
+    if(player === 'x'){
+      player = 'o';
     }else{
-      $("#input").html(math.eval($("#history").html()));
+      player ='x';
     }
-      answer = true;
-      afterOp = false;
-
-    }
-    //ac pushed --> clear input and history
-    else if (btnVal === 'ac') {
-      $("#input").html('');
-      $("#history").html('');
-      afterOp = false;
-      
-    }
-    //ce pushed --> clear input & last operand
-    else if (btnVal === 'ce') {
-      $("#input").html('__');
-      
-      var historyArr = $("#history").html().split('');
-      for(var i = historyArr.length; i >= 0; i--){
-        for(var j = 0; j < operatorArr.length; j++){
-          if(historyArr[i] === operatorArr[j]){
-            historyArr = historyArr.slice(0,i+1);
-            var end = true;
-            break;
-          }
-          }
-        if(end){
-          i = -1;
-        }
-      }
-      
-      historyArr = historyArr.join('');
-      console.log(historyArr);
-      $("#history").html(historyArr);
-      afterOp = false;
-      
-      //All normal button presses
-    }else if(btnVal === '/' || btnVal === '*' || btnVal === '+' || btnVal === '-' || btnVal === '.'){
-        if(!afterOp){
-           $("#input").html('');
-           $("#input").html(btnVal);
-           $("#history").append(btnVal);
-          afterOp = true;
-        }
-      } else {
-      $("#input").html('');
-      $("#input").html(btnVal);
-      $("#history").append(btnVal);
-      afterOp = false;
-    }
+    value = $(this).attr("value");
+    //console.log(value);
+    tictacbox[value] = player;
+    //Draw array on board
+    drawBoard(tictacbox);
+    
+    //Game ending conditions
+     for(var i = 0; i < tictacbox.length; i++){
+       if(tictacbox[i] !== ''){
+         //Vertical condition
+         if(tictacbox[i] === tictacbox[i+3] && tictacbox[i] === tictacbox[i+6]){
+           gameOver(tictacbox);
+         }
+         //Horizontal condition
+         if(i == 0 || i == 3 || i == 6){
+           if(tictacbox[i] === tictacbox[i+1] && tictacbox[i] === tictacbox[i+2]){
+             gameOver(tictacbox);
+           }
+         }
+         //Diagonal condition 1 (top left)
+         if(i == 0){
+           if(tictacbox[i] === tictacbox[i+4] && tictacbox[i] === tictacbox[i+8]){
+             gameOver(tictacbox);
+           }
+         }
+         //Diagonal condition 2 (top right)
+         if(i == 2){
+           if(tictacbox[i] === tictacbox[i+2] && tictacbox[i] === tictacbox[i+4]){
+             gameOver(tictacbox);
+           }
+         }
+       }
+     }
   });
-
 });
