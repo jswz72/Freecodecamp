@@ -5,45 +5,61 @@ function drawBoard(tictacbox){
     $(".box").each(function(i) {
         $(this).html(tictacbox[i]);
     });
-    return;
 }
 
 function endGameCheck(tictacbox){
     "use strict";
+
     for(var i = 0; i < tictacbox.length; i++){
         if(tictacbox[i] !== ''){
+
             //Vertical condition
             if(tictacbox[i] === tictacbox[i+3] && tictacbox[i] === tictacbox[i+6]){
-                gameOver(tictacbox);
+                gameOver(tictacbox, tictacbox[i]);
             }
             //Horizontal condition
-            if(i == 0 || i == 3 || i == 6){
+            else if(i == 0 || i == 3 || i == 6){
                 if(tictacbox[i] === tictacbox[i+1] && tictacbox[i] === tictacbox[i+2]){
-                    gameOver(tictacbox);
+                    console.log(tictacbox[i]);
+                    gameOver(tictacbox, tictacbox[i]);
                 }
             }
             //Diagonal condition 1 (top left, bottom right)
-            if(i == 0){
+            else if(i == 0){
                 if(tictacbox[i] === tictacbox[i+4] && tictacbox[i] === tictacbox[i+8]){
-                    gameOver(tictacbox);
+                    console.log(tictacbox[i]);
+                    gameOver(tictacbox, tictacbox[i]);
                 }
             }
             //Diagonal condition 2 (top right, bottom left)
-            if(i == 2){
+            else if(i == 2){
                 if(tictacbox[i] === tictacbox[i+2] && tictacbox[i] === tictacbox[i+4]){
-                    gameOver(tictacbox);
+                    console.log(tictacbox[i]);
+                    gameOver(tictacbox, tictacbox[i]);
                 }
             }
         }
     }
 }
 
-function gameOver(tictacbox){
+function gameOver(tictacbox, winner){
+    "use strict"
     for(var i = 0; i < tictacbox.length; i++){
         tictacbox[i] = '';
     }
     drawBoard(tictacbox);
-    $("h1").html("YOU LOSE");
+    $("h1").html("Player " + winner.toUpperCase() + " Wins!");
+}
+
+function isEmpty(tictacbox){
+    //checks to see if empty array and if so, reverts to original heading
+    for(var i = 0; i < tictacbox.length; i++){
+        if(tictacbox[i] != ''){
+            return;
+        }
+    }
+
+    $("h1").html("Tic-Tac-Toe");
 }
 
 $(document).ready(function(){
@@ -53,6 +69,8 @@ $(document).ready(function(){
     var player = '';
 
     $(".box").click(function(){
+
+        isEmpty(tictacbox);
 
         //Switch player
         if(player === 'x'){
