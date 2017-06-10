@@ -1,9 +1,8 @@
 //Draw gameboard using array tictacbox
-function drawBoard(tictacbox){
+function drawBoard(currentBoard){
     "use strict";
-    var i = 0;
     $(".box").each(function(i) {
-        $(this).html(tictacbox[i]);
+        $(this).html(currentBoard[i]);
     });
 }
 
@@ -15,17 +14,17 @@ function endGameCheck(tictacbox){
 
             //Vertical condition
             if(tictacbox[i] === tictacbox[i+3] && tictacbox[i] === tictacbox[i+6]){
-                gameOver(tictacbox, tictacbox[i]);
+                gameOver(tictacbox[i]);
                 console.log("vertical");
-                return;
+                return true;
             }
             //Horizontal condition
             else if(i === 0 || i === 3 || i === 6){
                 if(tictacbox[i] === tictacbox[i+1] && tictacbox[i] === tictacbox[i+2]){
                     console.log(tictacbox[i]);
                     console.log("horizontal");
-                    gameOver(tictacbox, tictacbox[i]);
-                    return;
+                    gameOver(tictacbox[i]);
+                    return true;
                 }
             }
             //Diagonal condition 1 (top left, bottom right)
@@ -33,8 +32,8 @@ function endGameCheck(tictacbox){
                 if(tictacbox[i] === tictacbox[i+4] && tictacbox[i] === tictacbox[i+8]){
                     console.log(tictacbox[i]);
                     console.log("diagonal 1");
-                    gameOver(tictacbox, tictacbox[i]);
-                    return;
+                    gameOver(tictacbox[i]);
+                    return true;
                 }
             }
             //Diagonal condition 2 (top right, bottom left)
@@ -42,23 +41,27 @@ function endGameCheck(tictacbox){
                 if(tictacbox[i] === tictacbox[i+2] && tictacbox[i] === tictacbox[i+4]){
                     console.log(tictacbox[i]);
                     console.log("diagonal 2");
-                    gameOver(tictacbox, tictacbox[i]);
-                    return;
+                    gameOver(tictacbox[i]);
+                    return true;
                 }
             }
         }
+        return false;
     }
 }
 
-function gameOver(tictacbox, winner){
+function gameOver(winner){
     "use strict";
-    for(var i = 0; i < tictacbox.length; i++){
-        tictacbox[i] = '';
-    }
-    drawBoard(tictacbox);
     $("h1").html("Player " + winner.toUpperCase() + " Wins!");
 }
 
+function clearBoard(tictacbox){
+    for(var i = 0; i < tictacbox.length; i++){
+        tictacbox[i] = '';
+    }
+    $("h1").html("Tic-Tac-Toe");
+    drawBoard(tictacbox);
+}
 function isEmpty(tictacbox){
     //checks to see if empty array and if so, reverts to original heading
     for(var i = 0; i < tictacbox.length; i++){
@@ -78,7 +81,10 @@ $(document).ready(function(){
 
     $(".box").click(function(){
 
-        isEmpty(tictacbox);
+        //If game won, reset board
+        if(endGameCheck(tictacbox)){
+            clearBoard(tictacbox);
+        }
 
         //Store value of div representing clicked box
         value = $(this).attr("value");
@@ -99,6 +105,24 @@ $(document).ready(function(){
             endGameCheck(tictacbox);
         }
 
+
+    });
+
+    $("#1-player").click(function(){
+        for(var i = 0; i < tictacbox.length; i++){
+            tictacbox[i] = '';
+        }
+        drawBoard(tictacbox);
+        $("h1").html("1 Player Tic-Tac-Toe");
+
+    });
+
+    $("#2-player").click(function(){
+       for(var i = 0; i < tictacbox.length; i++){
+           tictacbox[i] = '';
+       }
+        drawBoard(tictacbox);
+        $("h1").html("2 Player Tic-Tac-Toe");
 
     });
 });
