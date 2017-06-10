@@ -16,26 +16,34 @@ function endGameCheck(tictacbox){
             //Vertical condition
             if(tictacbox[i] === tictacbox[i+3] && tictacbox[i] === tictacbox[i+6]){
                 gameOver(tictacbox, tictacbox[i]);
+                console.log("vertical");
+                return;
             }
             //Horizontal condition
-            else if(i == 0 || i == 3 || i == 6){
+            else if(i === 0 || i === 3 || i === 6){
                 if(tictacbox[i] === tictacbox[i+1] && tictacbox[i] === tictacbox[i+2]){
                     console.log(tictacbox[i]);
+                    console.log("horizontal");
                     gameOver(tictacbox, tictacbox[i]);
+                    return;
                 }
             }
             //Diagonal condition 1 (top left, bottom right)
-            else if(i == 0){
+            if(i === 0){
                 if(tictacbox[i] === tictacbox[i+4] && tictacbox[i] === tictacbox[i+8]){
                     console.log(tictacbox[i]);
+                    console.log("diagonal 1");
                     gameOver(tictacbox, tictacbox[i]);
+                    return;
                 }
             }
             //Diagonal condition 2 (top right, bottom left)
-            else if(i == 2){
+            else if(i === 2){
                 if(tictacbox[i] === tictacbox[i+2] && tictacbox[i] === tictacbox[i+4]){
                     console.log(tictacbox[i]);
+                    console.log("diagonal 2");
                     gameOver(tictacbox, tictacbox[i]);
+                    return;
                 }
             }
         }
@@ -43,7 +51,7 @@ function endGameCheck(tictacbox){
 }
 
 function gameOver(tictacbox, winner){
-    "use strict"
+    "use strict";
     for(var i = 0; i < tictacbox.length; i++){
         tictacbox[i] = '';
     }
@@ -54,7 +62,7 @@ function gameOver(tictacbox, winner){
 function isEmpty(tictacbox){
     //checks to see if empty array and if so, reverts to original heading
     for(var i = 0; i < tictacbox.length; i++){
-        if(tictacbox[i] != ''){
+        if(tictacbox[i] !== ''){
             return;
         }
     }
@@ -72,20 +80,25 @@ $(document).ready(function(){
 
         isEmpty(tictacbox);
 
-        //Switch player
-        if(player === 'x'){
-            player = 'o';
-        }else{
-            player ='x';
-        }
-
         //Store value of div representing clicked box
         value = $(this).attr("value");
         //console.log(value);
-        tictacbox[value] = player;
-        //Draw array on board
-        drawBoard(tictacbox);
-        endGameCheck(tictacbox);
+
+        if(tictacbox[value] === ''){
+            //Switch player
+            if(player === 'x'){
+                player = 'o';
+            }else{
+                player ='x';
+            }
+
+            tictacbox[value] = player;
+
+            //Draw array on board
+            drawBoard(tictacbox);
+            endGameCheck(tictacbox);
+        }
+
 
     });
 });
