@@ -1,128 +1,128 @@
-//Draw gameboard using array tictacbox
-function drawBoard(currentBoard){
-    "use strict";
-    $(".box").each(function(i) {
-        $(this).html(currentBoard[i]);
-    });
-}
 
-function endGameCheck(tictacbox){
-    "use strict";
+var tictacbox = {
 
-    for(var i = 0; i < tictacbox.length; i++){
-        if(tictacbox[i] !== ''){
+    currentBoard : ['','','','','','','','',''],
 
-            //Vertical condition
-            if(tictacbox[i] === tictacbox[i+3] && tictacbox[i] === tictacbox[i+6]){
-                gameOver(tictacbox[i]);
-                console.log("vertical");
-                return true;
-            }
-            //Horizontal condition
-            else if(i === 0 || i === 3 || i === 6){
-                if(tictacbox[i] === tictacbox[i+1] && tictacbox[i] === tictacbox[i+2]){
-                    console.log(tictacbox[i]);
-                    console.log("horizontal");
-                    gameOver(tictacbox[i]);
-                    return true;
-                }
-            }
-            //Diagonal condition 1 (top left, bottom right)
-            if(i === 0){
-                if(tictacbox[i] === tictacbox[i+4] && tictacbox[i] === tictacbox[i+8]){
-                    console.log(tictacbox[i]);
-                    console.log("diagonal 1");
-                    gameOver(tictacbox[i]);
-                    return true;
-                }
-            }
-            //Diagonal condition 2 (top right, bottom left)
-            else if(i === 2){
-                if(tictacbox[i] === tictacbox[i+2] && tictacbox[i] === tictacbox[i+4]){
-                    console.log(tictacbox[i]);
-                    console.log("diagonal 2");
-                    gameOver(tictacbox[i]);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-}
+    //Holds 1 or 2 players
+    playerMode : 1,
 
-function gameOver(winner){
-    "use strict";
-    $("h1").html("Player " + winner.toUpperCase() + " Wins!");
-}
+    //True for game in progress
+    gameInProgress : false,
 
-function clearBoard(tictacbox){
-    for(var i = 0; i < tictacbox.length; i++){
-        tictacbox[i] = '';
-    }
-    $("h1").html("Tic-Tac-Toe");
-    drawBoard(tictacbox);
-}
-function isEmpty(tictacbox){
-    //checks to see if empty array and if so, reverts to original heading
-    for(var i = 0; i < tictacbox.length; i++){
-        if(tictacbox[i] !== ''){
-            return;
-        }
-    }
+    drawBoard : function(){
+        $(".box").each(function(i) {
+            $(this).html(currentBoard[i]);
+        });
+    },
 
-    $("h1").html("Tic-Tac-Toe");
-}
-
-$(document).ready(function(){
-
-    var tictacbox = ['','','','','','','','',''];
-    var value;
-    var player = '';
-
-    $(".box").click(function(){
-
-        //If game won, reset board
-        if(endGameCheck(tictacbox)){
-            clearBoard(tictacbox);
-        }
-
-        //Store value of div representing clicked box
-        value = $(this).attr("value");
-        //console.log(value);
-
-        if(tictacbox[value] === ''){
-            //Switch player
-            if(player === 'x'){
-                player = 'o';
-            }else{
-                player ='x';
-            }
-
-            tictacbox[value] = player;
-
-            //Draw array on board
-            drawBoard(tictacbox);
-            endGameCheck(tictacbox);
-        }
-
-
-    });
-
-    $("#1-player").click(function(){
+    //Resets board (to '') and title
+    resetGame : function(){
         for(var i = 0; i < tictacbox.length; i++){
             tictacbox[i] = '';
         }
-        drawBoard(tictacbox);
-        $("h1").html("1 Player Tic-Tac-Toe");
+        $("h1").html("Tic-Tac-Toe");
+    },
+
+    //Returns true if board empty
+    isEmpty : function(){
+        for(var i = 0; i < tictacbox.length; i++){
+            if(tictacbox[i] !== ''){
+                return false;
+            }
+        }
+        return true;
+    },
+
+    //Reset title with winner
+    gameOver : function(){
+        $("h1").html("Player " + winner.toUpperCase() + " Wins!");
+    },
+
+    //Return true if winner, false if not
+    endGameCheck : function(){
+        for(var i = 0; i < tictacbox.length; i++){
+            if(tictacbox[i] !== ''){
+
+                //Vertical condition
+                if(tictacbox[i] === tictacbox[i+3] && tictacbox[i] === tictacbox[i+6]){
+                    console.log("vertical");
+                    return true;
+                }
+                //Horizontal condition
+                else if(i === 0 || i === 3 || i === 6){
+                    if(tictacbox[i] === tictacbox[i+1] && tictacbox[i] === tictacbox[i+2]){
+                        console.log(tictacbox[i]);
+                        console.log("horizontal");
+                        return true;
+                    }
+                }
+                //Diagonal condition 1 (top left, bottom right)
+                if(i === 0){
+                    if(tictacbox[i] === tictacbox[i+4] && tictacbox[i] === tictacbox[i+8]){
+                        console.log(tictacbox[i]);
+                        console.log("diagonal 1");
+                        return true;
+                    }
+                }
+                //Diagonal condition 2 (top right, bottom left)
+                else if(i === 2){
+                    if(tictacbox[i] === tictacbox[i+2] && tictacbox[i] === tictacbox[i+4]){
+                        console.log(tictacbox[i]);
+                        console.log("diagonal 2");
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+};
+
+var computer;
+
+var human;
+
+
+$(document).ready(function(){
+
+    var value;
+
+    $(".box").click(function(){
+
+        value = $(this).attr("value");
+
+        //ensure no boxes overwritten
+        if(tictacbox[value] === ''){
+            //single-player
+            if(tictacbox.playerMode === 1){
+                //player pick box
+                //endgameCheck
+                //computer pick box
+                //endgameCheck
+            }
+
+            //two-player
+            else if (tictacbox.playerMode === 2){
+
+            }
+        }
 
     });
 
-    $("#2-player").click(function(){
-       for(var i = 0; i < tictacbox.length; i++){
-           tictacbox[i] = '';
-       }
-        drawBoard(tictacbox);
-        $("h1").html("2 Player Tic-Tac-Toe");
+    $("#1-player, #2-player").click(function(){
 
+        if(tictacbox.gameInProgress === true){
+            tictacbox.resetGame();
+        }
+
+        if(this.id === "1-player"){
+            tictacbox.playerMode = 1;
+            $("h1").html("Tic-Tac-Toe vs Computer");
+        }
+        else if(this.id === "2-player"){
+            tictacbox.playerMode = 2;
+            $("h1").html("2 Player Tic-Tac-Toe vs Friend");
+        }
     });
+
 });
