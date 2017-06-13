@@ -6,7 +6,7 @@ var tictacbox = {
     //Holds 1 or 2 players
     playerMode : 1,
 
-    //Holds x or o for 2-player mode
+    //Holds current player
     playerXO : 'X',
 
     //True for game in progress
@@ -16,15 +16,17 @@ var tictacbox = {
         //Horizontal
         [0,1,2],
         [3,4,5],
-        [4,5,6],
+        [6,7,8],
         //Vertical
-        [0,3,5],
+        [0,3,6],
         [1,4,7],
         [2,5,8],
         //Diagonal
         [0,4,8],
         [2,4,6]
     ],
+
+    winString : '',
 
     drawBoard : function(){
         $(".box").each(function(i) {
@@ -37,8 +39,10 @@ var tictacbox = {
         for(var i = 0; i < tictacbox.currentBoard.length; i++){
             tictacbox.currentBoard[i] = '';
             this.drawBoard();
-
         }
+
+        $("h2").fadeOut(800);   //opacity?
+
         if(this.playerMode === 1){
             $("h1").html("Tic-Tac-Toe vs Computer");
         }
@@ -62,19 +66,21 @@ var tictacbox = {
 
     //Reset title with winner
     gameOver : function(){
-        $("h1").html("Player " + this.playerXO +  " Wins!");
+        $("h1").html(this.winString);
+        $("h2").html("Choose Mode or Click Tile To Begin");
+        $("h2").fadeIn(800);
     },
 
     //Return true if winner, false if not
     endGameCheck : function() {
 
         //Returns list containing indices of either x/o
-        function findIndices(xo){
+        function findIndices(player){
 
             //Holds found indices of x/o
             var indices = [];
             var i = -1;
-            while((i = tictacbox.currentBoard.indexOf(xo, i+1)) != -1){
+            while((i = tictacbox.currentBoard.indexOf(player, i+1)) != -1){
                 indices.push(i);
             }
             return indices;
@@ -82,21 +88,99 @@ var tictacbox = {
 
         var xIndices = findIndices('X');
         var oIndices = findIndices('O');
-        var endGame = false;
+        var openIndices = findIndices('');
 
-        //Compare all winningCombos to the x/oIndices
+        console.log(openIndices);
 
+        if(openIndices.length === 0){
+            this.winString = "Draw!";
+            return true;
+        }
+
+        //console.log(xIndices);
+        //console.log(oIndices);
+        //Boolean, false if winning condition not met
+        var xendGame;
+        var oendGame;
+
+        //Compare all winningCombos to the xIndices
+        for(var i = 0; i < this.winningCombos.length; i++){
+            xendGame = true;
+            for(var j = 0; j < 3; j++){
+                //If current winning combo not found --> false
+                if(xIndices.indexOf(this.winningCombos[i][j]) === -1){
+                    xendGame = false;
+                }
+            }
+            if(xendGame){
+                this.winString = "Player X Wins!";
+                return true;
+            }
+        }
+
+        //Compare all winningCombos to the oIndices
+        for(i = 0; i < this.winningCombos.length; i++){
+            oendGame = true;
+            for(j = 0; j < 3; j++){
+                //If current winning combo not found --> false
+                if(oIndices.indexOf(this.winningCombos[i][j]) === -1){
+                    oendGame = false;
+                }
+            }
+            if(oendGame){
+                this.winString = "Player O Wins!"
+                return true;
+            }
+        }
+        console.log("no win");
+    },
+
+    //Adds 10 if player wins and subtracts if opposite player wins
+    score : function(player) {
+
+        if (this.endGameCheck()) {
+            if (player.assignment === this.playerXO) {
+                player.score += 10;
+            }
+            else if (player.assignment !== this.playerXO) {
+                player.score -= 10;
+            }
+        }
+    },
+
+    findOpenBoxes : function(){
+
+        var openIndices= [];
+        var i = -1;
+        while((i = tictacbox.currentBoard.indexOf('', i+1)) != -1){
+            openIndices.push(i);
+        }
+
+        return openIndices;
+        //.....
     }
 };
 
-var computer;
+var computer = {
 
-var human;
+    //X or O depending on player choice
+    assignment : '',
+
+    score : 0
+}
+
+var human = {
+
+    assignment : '',
+
+    score : 0
+}
 
 $(document).ready(function(){
 
     var value;
     $("#tictactoe").hide();
+
     $(".box").click(function(){
 
         value = $(this).attr("value");
@@ -136,7 +220,7 @@ $(document).ready(function(){
                 }
             }
         }else{
-            console.log("Failed to recognize gametype");
+            console.log("Failed to recognize playerMode");
         }
 
     });
