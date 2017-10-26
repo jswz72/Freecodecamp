@@ -1,3 +1,3 @@
 # Freecodecamp
 
-Free code camp projects
+Smaller front-end projects, inspiration from https://www.freecodecamp.org
